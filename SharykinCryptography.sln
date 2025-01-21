@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Symmetric", "src\Symmetric\Symmetric.csproj", "{74D9C82E-6B46-4920-98CD-6E97D986CB1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests\Tests.csproj", "{69F83ECF-7264-447B-ACA8-AA7DFC124BC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{74D9C82E-6B46-4920-98CD-6E97D986CB1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74D9C82E-6B46-4920-98CD-6E97D986CB1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74D9C82E-6B46-4920-98CD-6E97D986CB1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69F83ECF-7264-447B-ACA8-AA7DFC124BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69F83ECF-7264-447B-ACA8-AA7DFC124BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69F83ECF-7264-447B-ACA8-AA7DFC124BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69F83ECF-7264-447B-ACA8-AA7DFC124BC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
