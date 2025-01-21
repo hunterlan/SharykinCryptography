@@ -8,7 +8,7 @@ public class AesTest
     public void EncryptTest()
     {
         var myAes = new Aes("x2#w3V3325&Umr^!3$#$qpNa!Z$4TPpP");
-        myAes.Encrypt("abc");
+        myAes.Encrypt("abcjkjdnvhjfh");
         Assert.True(true);
     }
 

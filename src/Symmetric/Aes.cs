@@ -37,30 +37,57 @@ public class Aes
     }
     
     public string Encrypt(string plainText)
-    {
+    { 
+        const int blockSizeBytes = BlockSize / OneByte;
+        List<byte>? extendedPlainText = null;
+        string resultEncryption = string.Empty;
         var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
         var keyBytes = Encoding.UTF8.GetBytes(_key);
-        var byteEncryption = Encrypt(plainTextBytes, keyBytes);
-        var resultEncryption = Encoding.UTF8.GetString(byteEncryption);
-        
+
+        if (plainTextBytes.Length < blockSizeBytes)
+        {
+            var diffLen = blockSizeBytes - plainTextBytes.Length;
+            
+            extendedPlainText = new List<byte>(blockSizeBytes);
+            extendedPlainText.AddRange(plainTextBytes);
+            extendedPlainText.AddRange(Enumerable.Repeat<byte>(0, diffLen).ToArray());
+            
+            var byteEncryption = Encrypt(extendedPlainText.ToArray(), keyBytes);
+            resultEncryption = Encoding.UTF8.GetString(byteEncryption);
+        }
+        else if (plainTextBytes.Length > blockSizeBytes)
+        {
+            throw new NotImplementedException();
+        }
+        else
+        {
+            var byteEncryption = Encrypt(plainTextBytes, keyBytes);
+            resultEncryption = Encoding.UTF8.GetString(byteEncryption);
+        }
+
         return resultEncryption;
     }
 
     private byte[] Encrypt(byte[] data, byte[] key)
     {
-        if (data.Length != (KeySize / OneByte))
+        if (data.Length != BlockSize / OneByte)
         {
-            throw new ArgumentException();
+            throw new ArgumentException($"Size of block should be {BlockSize/OneByte} bytes, but was {data.Length} bytes");
         }
 
-        AddRoundKey();
+        if (key.Length != KeySize / OneByte)
+        {
+            throw new ArgumentException($"Size of key should be {KeySize/OneByte} bytes, but was {key.Length} bytes");
+        }
+
+        AddRoundKey(data, key);
         
         for (var i = 0; i < Rounds; i++)
         {
             data = SubBytes(data);
             data = ShiftRows(data);
             data = MixColumns(data);
-            AddRoundKey();
+            AddRoundKey(data, key);
         }
 
         return data;
@@ -68,21 +95,53 @@ public class Aes
 
     private byte[] SubBytes(byte[] data)
     {
-        throw new NotImplementedException();
+        return data;
     }
 
     private byte[] ShiftRows(byte[] data)
     {
-        throw new NotImplementedException();
+        var matrix = ToTwoDimensionalArray(data);
+
+        for (var i = 1; i < matrix.Length; i++)
+        {
+            List<byte> row = [];
+            
+            row.AddRange(matrix[i].Take(new Range(i, matrix[i].Length)));
+            row.AddRange(matrix[i].Take(new Range(0, i)));
+
+            matrix[i] = row.ToArray();
+        }
+
+
+        return data;
     }
 
     private byte[] MixColumns(byte[] data)
     {
-        throw new NotImplementedException();   
+        return data;
     }
 
-    private void AddRoundKey()
+    private byte[] AddRoundKey(byte[] data, byte[] key)
     {
-        throw new NotImplementedException();
+        return data;
+    }
+
+    private byte[][] ToTwoDimensionalArray(byte[] data)
+    {
+        const int matrixSize = BlockSize / OneByte;
+        var matrixRowSize = (int)Math.Sqrt(matrixSize);
+        
+        byte[][] matrix = new byte[matrixRowSize][];
+
+        for (int i = 0; i < matrixRowSize; i++)
+        {
+            matrix[i] = new byte[matrixRowSize];
+            for (int j = 0; j < matrixRowSize; j++)
+            {
+                matrix[i][j] = data[i*matrixRowSize + j];
+            }
+        }
+        
+        return matrix;
     }
 }
